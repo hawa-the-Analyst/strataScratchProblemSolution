@@ -1,9 +1,9 @@
 --solution 1 using CTEs and window function
--- Execution time: 0.01001 seconds
+-- Execution time: 0.00795 seconds
 
 WITH emp_salary_rank AS (
                     select *,
-                    RANK() OVER(partition by id order by salary desc) AS rn
+                    RANK() OVER(partition by id, first_name, last_name,department_id order by salary desc) AS rn
                     from ms_employee_salary)
 
 SELECT id, first_name, last_name, department_id, salary as current_salary
