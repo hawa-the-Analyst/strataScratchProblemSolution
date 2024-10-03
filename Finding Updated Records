@@ -1,0 +1,26 @@
+--solution 1 using CTEs and window function
+-- Execution time: 0.01001 seconds
+
+WITH emp_salary_rank AS (
+                    select *,
+                    RANK() OVER(partition by id order by salary desc) AS rn
+                    from ms_employee_salary)
+
+SELECT id, first_name, last_name, department_id, salary as current_salary
+FROM emp_salary_rank
+WHERE rn = 1
+ORDER BY id;
+
+--solution 2
+--Execution time: 0.01176 seconds
+SELECT id,
+       first_name,
+       last_name,
+       department_id,
+       MAX(salary) AS current_salary
+FROM ms_employee_salary
+GROUP BY id,
+         first_name,
+         last_name,
+         department_id
+ORDER BY id ;
